@@ -1,40 +1,61 @@
 var mysql = require('mysql');
+var util = require('util');
 
 var client = mysql.createConnection({
 	user: 'stefano',
 	password: 'stefanodb',
 	database: 'stefano_zbot'
 });
- 
+
 //--------------------
 // Constructor
 //--------------------
-function Level() {};
-
-var l = Level.prototype;
+function Plugin() { 
+	this.channel = '';
+	this.nick = '';
+	this.version = '0.1';
+};
 
 //--------------------
 // methods
 //--------------------
 
-l.process = function(msg, from, to) {
-	var levelUser = this.getLevel(from, to);
-	console.log(this.getLevel(from, to));
-	return [1, levelUser];
+Plugin.prototype.initialize = function(botObj, nick, channel) {
+	this.bot = botObj;
+	this.channel = channel;
+	this.nick = nick;
+
+	console.log("nick: "+nick);
+	console.log("channel: "+channel);
+}
+
+Plugin.prototype.process = function(msg, from, to) {
+	this.getLevel(from, to);
 };
 
-l.getLevel = function(nick, channel) {
-	var level;
-	
-	client.query("select level from users where nick = ? and channel = ? limit 1", [nick, channel], function(error, results, fields) {
-		if (error) throw error;
-		level =  results.level;
-	});
+Plugin.prototype.getLevel = function() {
 
-	return level;
+	client.query("select level from users where nick = ? and channel = ? limit 1", [this.nick, this.channel], function(error, results, fields) {
+		if (error) {
+			this.bot.say(to, "level 0");
+		}
+		if((typeof(result) != "undefined")) {
+			level = parseInt(results[0]['level']);
+			if(level > 0) {
+				this.bot.say(this.channel, Util.format("level %s", this.level));
+			}
+			else {
+				this.bot.say(this.channel, "level 0");
+			}
+		}
+		else {
+			this.bot.say(this.channel, "level 0");
+		}
+
+	});
 };
 
 //---------------------
 // Exports - Singleton
 //---------------------
-module.exports = new Level();
+module.exports = new Plugin();

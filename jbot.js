@@ -43,18 +43,13 @@ bot.addListener('message', function (from, to, message) {
 
 				try {
 					module = require(pathModule);
-					result = module.process(message, from, to);
+					module.initialize(bot, from, to);
+					module.process(message);
 				}
 				catch (error) {
 					log.write(util.format("ERROR IN MODULE [%s]", pathModule));
 					log.write(util.format("ERROR MSG [%s]", error.message));
 				}
-
-
-				if (result[0] == 1) {
-					bot.say(to,result[1]);
-				}
-
 			}
 			else {
 				console.log('ERROR no existe modulo [%s]', pathModule);
