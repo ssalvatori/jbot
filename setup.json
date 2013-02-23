@@ -1,0 +1,17 @@
+{
+	"config" : {
+		"debug" : true,
+		"modulePath" : "./modules",
+	},
+	"irc" : {
+		"server": "152.74.100.228",
+		"channel": "#linux",
+		"nick": "jbot"
+	},
+	"database" : {
+		"server":  "localhost",
+		"database": "jbot",
+		"user": "jbot",
+		"password": "jbot"
+	}
+}

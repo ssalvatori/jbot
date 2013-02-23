@@ -1,19 +1,27 @@
+var util = require('util');
+var fs = require('fs');
 //--------------------
 // Constructor
 //--------------------
-function Log() {};
-
-var l = Log.prototype;
+function Log() { 
+	var setup = require('config.js');
+	this.debug = setup.getDebug();
+	this.debugFile = setup.getDebugFile();
+};
 
 //--------------------
 // methods
 //--------------------
 
-l.write = function(params) {
+Plugin.prototype.write = function(msg) {
+	//var now = new Date();
+	var nowDateTime = new Date().format("dd/mm/yy H:ii:ss")
+	var msgLog =  util.format("[%s] : [%s]", nowDateTime, msg);
 
-	console.log(" --- [%s] ", params);
-
-	console.trace();
+	if(this.debug) {
+		console.log(msgLog);
+		fs.appendFileSync(this.debugFile, msgLog);
+	}
 };
 
 //---------------------
