@@ -12,18 +12,30 @@ function Config() {
 
 	this.debugFile = 'jbot.debug';
 
+	this.loadConfig = false;
+
 	this.dbServer;
 	this.dbUsername;
 	this.dbPassword;
 	this.dbDatabase;
+
+	if(!this.checkLoadConfig()) {
+		this.loadConfig();
+	}
 };
 
 //--------------------
 // methods
 //--------------------
 
-Plugin.prototype.initialize = function() {
+Plugin.prototype.checkLoadConfig = function() {
+	if(this.loadConfig) { return false;	}
+	return true;
+};
+
+Plugin.prototype.loadConfig = function() {
 	var setupJson = require(this.configFile);
+	this.debug = setupJson.config.debug;
 }
 
 Plugin.prototype.process = function(msg, from, to) {
