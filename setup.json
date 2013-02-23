@@ -1,17 +1,22 @@
 {
-	"config" : {
-		"debug" : true,
-		"modulePath" : "./modules",
-	},
-	"irc" : {
-		"server": "152.74.100.228",
-		"channel": "#linux",
-		"nick": "jbot"
-	},
-	"database" : {
-		"server":  "localhost",
-		"database": "jbot",
-		"user": "jbot",
-		"password": "jbot"
-	}
+    "config": {
+        "debug": true,
+      	"debugFile": "./var/log/jbot.debug",
+        "modulePath": "./modules"
+    },
+    "irc": {
+        "server": "152.74.100.228",
+        "channel": "#dev",
+        "nick": "jbot"
+    },
+    "database": {
+        "server": "localhost",
+        "database": "jbot",
+        "user": "jbot",
+        "password": "jbot"
+    },
+    "about": {
+        "version": "0.1",
+        "repository": "http://github.com/ssalvatori/jbot"
+    }
 }

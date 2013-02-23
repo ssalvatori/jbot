@@ -8,7 +8,7 @@ var log = require('./log');
 
 //setup
 var config = new Array();
-config['server'] = 'localhost';
+config['server'] = '152.74.100.228';
 config['nick'] = 'jbot';
 config['channels'] = ['#dev'];
 config['debug'] = 1;
@@ -38,7 +38,6 @@ bot.addListener('message', function (from, to, message) {
 			module = command[2];
 			pathModule = config['dirModule']+module+".js";
 			if ( fs.existsSync(pathModule) ) { 
-
 				console.log('Loading module [%s]', pathModule);
 
 				try {
@@ -50,6 +49,7 @@ bot.addListener('message', function (from, to, message) {
 					log.write(util.format("ERROR IN MODULE [%s]", pathModule));
 					log.write(util.format("ERROR MSG [%s]", error.message));
 				}
+
 			}
 			else {
 				console.log('ERROR no existe modulo [%s]', pathModule);

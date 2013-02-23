@@ -1,19 +1,17 @@
 //--------------------
 // Constructor
 //--------------------
-function Config() { 
+function Plugin() { 
 	this.channel = '';
 	this.nick = '';
 	this.server = '';
-	this.version = '0.1';
+	this.version;
+  this.repository;
+  this.debug;
+  this.debugFile;
 	this.modulePath = './modules';
-	this.debug = true;
-	this.configFile = 'setup.json';
-
-	this.debugFile = 'jbot.debug';
-
-	this.loadConfig = false;
-
+	this.configFile = './setup.json';
+	this.readConfig = true;
 	this.dbServer;
 	this.dbUsername;
 	this.dbPassword;
@@ -29,17 +27,36 @@ function Config() {
 //--------------------
 
 Plugin.prototype.checkLoadConfig = function() {
-	if(this.loadConfig) { return false;	}
+	if(this.readConfig) { return false;	}
 	return true;
 };
 
 Plugin.prototype.loadConfig = function() {
 	var setupJson = require(this.configFile);
 	this.debug = setupJson.config.debug;
+  this.debugFile = setupJson.config.debugFile;
+  this.version = setupJson.about.version;
+  this.repository = setupJson.about.repository;
 }
-
+  
 Plugin.prototype.process = function(msg, from, to) {
 	
+};
+
+Plugin.prototype.getVersion = function() {
+  return this.version;
+};
+
+Plugin.prototype.getRepository = function() {
+	return this.repository; 
+};
+
+Plugin.prototype.getDebug = function() { 
+  return this.debug; 
+};
+
+Plugin.prototype.getDebugFile = function () { 
+  return this.debugFile;
 };
 
 Plugin.prototype.getDbSetup = function() {
@@ -50,16 +67,12 @@ Plugin.prototype.getLevel = function() {
 
 };
 
-Public.prototype.getDbServer = function () { return this.dbServer; };
-Public.prototype.getDbUsername = function () { return this.dbUsername; };
-Public.prototype.getDbPassword = function() { return this.dbDbPassword; };
-Public.prototype.getDbDatabase = function() { return this.DbDatabase; };
-
-Public.prototype.getDebug = function() { return this.debug; };
-
-Public.prototype.getDebugFile = function () { return this.debugFile};
+Plugin.prototype.getDbServer = function () { return this.dbServer; };
+Plugin.prototype.getDbUsername = function () { return this.dbUsername; };
+Plugin.prototype.getDbPassword = function() { return this.dbDbPassword; };
+Plugin.prototype.getDbDatabase = function() { return this.DbDatabase; };
 
 //---------------------
 // Exports - Singleton
 //---------------------
-module.exports = new Config();
+module.exports = new Plugin();
