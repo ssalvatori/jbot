@@ -5,24 +5,23 @@ var util = require('util');
 
 //LOCAL MODULES
 var log = require('./log');
+var setup = require('./config.js');
 
 //setup
-var config = new Array();
-config['server'] = '152.74.100.228';
-config['nick'] = 'jbot';
-config['channels'] = ['#dev'];
-config['debug'] = 1;
-config['dirModule'] = './modules/';
+var server = setup.getServer();
+var nick = setup.getNick();
+var channels = setup.getChannels();
+var debug = setup.getDebug();
+var modulePath = setup.getModulePath();
 
-function writeLog(from, to, message) {
-	if(config['debug']) {
-		console.log("From [%s] To [%s] Message [%s]");
-	}
-}
+log.write("Conectando");
+log.write("Server ["+server+"]");
+log.write("Nick ["+nick+"]");
+log.write("Channels "+channels);
 
-var bot = new irc.Client(config['server'], config['nick'], {
+var bot = new irc.Client(server, nick, {
     debug: true,
-    channels: config['channels'],
+    channels: channels,
 });
 
 bot.addListener('error', function(message) {
@@ -30,31 +29,31 @@ bot.addListener('error', function(message) {
 });
 
 bot.addListener('message', function (from, to, message) {
-    console.log('%s => %s: %s', from, to, message);
+    log.write(util.format('%s => %s: %s', from, to, message));
 
     //command
 	if ( to.match(/^[#&]/) ) {
-		if ( command = message.match(/^(!)(\w*)/) ){
-			module = command[2];
-			pathModule = config['dirModule']+module+".js";
-			if ( fs.existsSync(pathModule) ) { 
-				console.log('Loading module [%s]', pathModule);
-
-				try {
-					module = require(pathModule);
-					module.initialize(bot, from, to);
-					module.process(message);
-				}
-				catch (error) {
-					log.write(util.format("ERROR IN MODULE [%s]", pathModule));
-					log.write(util.format("ERROR MSG [%s]", error.message));
-				}
-
+			if ( command = message.match(/^(!)(\w*)/) ){
+				module = command[2];
+        pathModule = modulePath+module+".js";
+        if ( fs.existsSync(pathModule) ) { 
+          log.write(util.format('Loading module [%s]', pathModule));
+          
+          try {
+            module = require(pathModule);
+            module.initialize(bot, from, to);
+            module.process(message);
+          }
+          catch (error) {
+            log.write(util.format("ERROR IN MODULE [%s]", pathModule));
+            log.write(util.format("ERROR MSG [%s]", error.message));
+          }
+          
+        }
+        else {
+          log.write(util.format('ERROR no existe modulo [%s]', pathModule));
+        }
 			}
-			else {
-				console.log('ERROR no existe modulo [%s]', pathModule);
-			}
-		}
     }
     else {
         // private message

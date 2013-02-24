@@ -1,19 +1,18 @@
 var mysql = require('mysql');
 var util = require('util');
+var setup = require('../config.js');
 
 var client = mysql.createConnection({
-	user: 'stefano',
-	password: 'stefanodb',
-	database: 'stefano_zbot'
+	user: setup.getDbUsername(),
+	password: setup.getDbPassword(),
+	database: setup.getDbDatabase()
 });
 
 //--------------------
 // Constructor
 //--------------------
 function Plugin() { 
-	this.channel = '';
-	this.nick = '';
-	this.version = '0.1';
+
 };
 
 //--------------------
@@ -24,16 +23,13 @@ Plugin.prototype.initialize = function(botObj, nick, channel) {
 	this.bot = botObj;
 	this.channel = channel;
 	this.nick = nick;
-
-	console.log("nick: "+nick);
-	console.log("channel: "+channel);
 }
 
 Plugin.prototype.process = function(msg, from, to) {
 	this.getLevel(from, to);
 };
 
-Plugin.prototype.getLevel = function() {
+Plugin.prototype.getLevel = function(from, to) {
 
 	client.query("select level from users where nick = ? and channel = ? limit 1", [this.nick, this.channel], function(error, results, fields) {
 		if (error) {

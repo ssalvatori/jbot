@@ -2,11 +2,11 @@
     "config": {
         "debug": true,
       	"debugFile": "./var/log/jbot.debug",
-        "modulePath": "./modules"
+        "modulePath": "./modules/"
     },
     "irc": {
         "server": "152.74.100.228",
-        "channel": "#dev",
+        "channels": ["#dev"],
         "nick": "jbot"
     },
     "database": {
