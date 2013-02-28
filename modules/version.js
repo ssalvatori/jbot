@@ -2,7 +2,8 @@ var util = require('util');
 //--------------------
 // Constructor
 //--------------------
-function Plugin() { 
+function Plugin(botObj) { 
+  this.bot = botObj;
 	var setup = require('../config.js');
 	this.version = setup.getVersion();
   this.repository = setup.getRepository();

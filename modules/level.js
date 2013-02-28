@@ -11,16 +11,15 @@ var client = mysql.createConnection({
 //--------------------
 // Constructor
 //--------------------
-function Plugin() { 
-
+function Plugin(botObj) { 
+	this.bot = botObj;
 };
 
 //--------------------
 // methods
 //--------------------
 
-Plugin.prototype.initialize = function(botObj, nick, channel) {
-	this.bot = botObj;
+Plugin.prototype.initialize = function(nick, channel) {
 	this.channel = channel;
 	this.nick = nick;
 }
@@ -54,4 +53,4 @@ Plugin.prototype.getLevel = function(from, to) {
 //---------------------
 // Exports - Singleton
 //---------------------
-module.exports = new Plugin();
+module.exports = new Plugin(botObj);

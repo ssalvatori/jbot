@@ -34,15 +34,16 @@ bot.addListener('message', function (from, to, message) {
     //command
 	if ( to.match(/^[#&]/) ) {
 			if ( command = message.match(/^(!)(\w*)/) ){
-				module = command[2];
-        pathModule = modulePath+module+".js";
+				moduleName = command[2];
+        pathModule = modulePath+moduleName+".js";
         if ( fs.existsSync(pathModule) ) { 
           log.write(util.format('Loading module [%s]', pathModule));
           
           try {
-            module = require(pathModule);
-            module.initialize(bot, from, to);
-            module.process(message);
+            var module = require(pathModule);
+            var plugin = new Plugin(bot);
+            plugin.initialize(from, to);
+            plugin.process(message);
           }
           catch (error) {
             log.write(util.format("ERROR IN MODULE [%s]", pathModule));
